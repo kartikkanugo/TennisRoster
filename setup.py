@@ -1,13 +1,12 @@
-from setuptools import setup
-from roster import version
+from setuptools import setup, find_packages
+from tennisroster import version
 setup(
-    name='TennisRoster',
+    name='tennisroster',
     version=version.__version__,
-    packages=['roster', 'roster.resources'],
+    packages=find_packages(exclude=['test']),
     url='',
     license='LICENSE.txt',
     author='kartik',
     author_email='karthik.kanugo@gmail.com',
-    description='Tennis Roster system',
-    long_description=open('README.md').read()
+    description='Tennis Roster system'
 )
