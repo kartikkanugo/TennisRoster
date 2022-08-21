@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 pandas = "*"
 build = "*"
+pipenv = "*"
+pipenv-setup = "*"
+black = "*"
 
 [dev-packages]
 
