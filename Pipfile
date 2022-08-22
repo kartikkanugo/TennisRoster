@@ -10,6 +10,7 @@ pipenv = "*"
 pipenv-setup = "*"
 black = "*"
 openpyxl = "*"
+pygraphviz="*"
 
 [dev-packages]
 

@@ -1,6 +1,7 @@
 import os
 from .resources import combinations
 from . import error
+from .resources import helper
 
 
 class Context:
@@ -12,11 +13,10 @@ class Context:
         self.matches = None
         self.pairs = None
         self.df = None
+        self.ctx = None
         if self._check_compatibility(file):
             self.ctx = file
-            # Initialise the json context by writing suitable things
         else:
-            self.ctx = None
             raise error.InputError("Json file is not empty or Incompatible. Initialisation failed")
 
     def load_input_data(self, excel_file, opts):
@@ -29,16 +29,26 @@ class Context:
 
     def create_matchups(self):
         self.matches = combinations.create_matchups(self.pairs)
+        helper.add_dict_to_json(self.ctx, self.matches, [(-1, -1)] * len(self.matches), [(-1, -1)] * len(self.matches))
         return self.matches
 
     def produce_flowchart(self):
+        pass
+
+    def get_match_list(self, round_num):
+        return helper.get_match_list(self.ctx, round_num - 1)
+
+    def update_scores(self, round_num, points_list, sub_pts_list):
+        helper.add_dict_to_json(self.ctx, self.get_match_list(round_num), points_list, sub_pts_list, round_num - 1)
         pass
 
     @staticmethod
     def _check_compatibility(path_of_file):
         # Checking if file exist and it is empty
         if os.path.exists(path_of_file) and os.stat(path_of_file).st_size == 0:
+            helper.initialise_json(path_of_file)
             return True
-        ## Check the compatibility with the file
+        if helper.check_file_compatibility(path_of_file):
+            return True
 
         return False
