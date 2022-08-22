@@ -9,6 +9,7 @@ build = "*"
 pipenv = "*"
 pipenv-setup = "*"
 black = "*"
+openpyxl = "*"
 
 [dev-packages]
 

@@ -9,3 +9,6 @@ The tennis roster problem must be divided into smaller sub problems to be solved
 - [ ] Prob 5: Provide the user to input all the tournament stats and produce updated flowchart of the tournament
 - [ ] Prob 6: Preferably provide the tournament stats in a **flowchart**
 - [ ] Prob 7: _Programming Interface_ Store the player stats in a **.json** file so that it can be loaded from any round of the tournament to update the stats
+
+## Installation
+The software requires installation of [pygraphviz](https://pygraphviz.github.io/documentation/stable/install.html#) 
