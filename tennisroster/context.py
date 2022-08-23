@@ -29,7 +29,8 @@ class Context:
 
     def create_matchups(self):
         self.matches = combinations.create_matchups(self.pairs)
-        helper.add_dict_to_json(self.ctx, self.matches, [(-1, -1)] * len(self.matches), [(-1, -1)] * len(self.matches), [(-1, -1)] * len(self.matches) )
+        helper.add_dict_to_json(self.ctx, self.matches, [(-1, -1)] * len(self.matches), [(0, 0)] * len(self.matches),
+                                [('D', 'D')] * len(self.matches))
         return self.matches
 
     def produce_flowchart(self):
@@ -39,7 +40,8 @@ class Context:
         return helper.get_match_list(self.ctx, round_num - 1)
 
     def update_scores(self, round_num, points_list, sub_pts_list, win_loss_list):
-        helper.add_dict_to_json(self.ctx, self.get_match_list(round_num), points_list, sub_pts_list, win_loss_list, round_num - 1)
+        helper.add_dict_to_json(self.ctx, self.get_match_list(round_num), points_list, sub_pts_list, win_loss_list,
+                                round_num - 1)
         pass
 
     @staticmethod
