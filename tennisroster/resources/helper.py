@@ -20,12 +20,13 @@ def initialise_json(path_to_file):
     f.close()
 
 
-def add_dict_to_json(path_to_file, match_list, points_list, sub_pts_list, round_num=-1):
+def add_dict_to_json(path_to_file, match_list, points_list, sub_pts_list, win_loss_list, round_num=-1):
     if len(match_list) != len(points_list) != len(sub_pts_list):
         raise error.InputError("Lengths of the match list, points list and sub_pts_list are not equal")
     round_dict = {"Teams": match_list,
                   "Points": points_list,
-                  "Sub_pts": sub_pts_list
+                  "Sub_pts": sub_pts_list,
+                  "Win_loss": win_loss_list
                   }
     f = open(path_to_file, 'r+')
     file_data = json.load(f)

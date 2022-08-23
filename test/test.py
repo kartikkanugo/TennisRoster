@@ -12,5 +12,6 @@ print(vals)
 
 points = [(1,2)] * len(vals)
 sub_points = [(15, 30)]* len(vals)
+win_list = [('W', 'L')]*len(vals)
 
-ctx.update_scores(2, points, sub_points)
+ctx.update_scores(2, points, sub_points, win_list)
