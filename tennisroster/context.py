@@ -2,6 +2,7 @@ import os
 from .resources import combinations
 from . import error
 from .resources import helper
+from .resources import flowchart
 
 
 class Context:
@@ -33,8 +34,13 @@ class Context:
                                 [('D', 'D')] * len(self.matches))
         return self.matches
 
-    def produce_flowchart(self):
-        pass
+    def produce_flowchart(self, round_num=None):
+        json_list = helper.get_json_list(self.ctx)
+        flow_obj = flowchart.Flowchart(json_list)
+        if round_num is None:
+            flow_obj.create_all_flow_charts()
+        else:
+            flow_obj.create_round_flow_chart(round_num - 1)
 
     def get_match_list(self, round_num):
         return helper.get_match_list(self.ctx, round_num - 1)
@@ -42,7 +48,6 @@ class Context:
     def update_scores(self, round_num, points_list, sub_pts_list, win_loss_list):
         helper.add_dict_to_json(self.ctx, self.get_match_list(round_num), points_list, sub_pts_list, win_loss_list,
                                 round_num - 1)
-        pass
 
     @staticmethod
     def _check_compatibility(path_of_file):

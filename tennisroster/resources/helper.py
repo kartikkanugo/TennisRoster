@@ -23,15 +23,15 @@ def initialise_json(path_to_file):
 def _check_win_loss_list(win_loss_list, sub_pts_list):
     wl_check = {'D', 'L', 'W'}
     sub_check = {0, 15, 30, 40}
-    for i, ii in win_loss_list, sub_pts_list:
-        for j, jj in i, ii:
+    for i, ii in zip(win_loss_list, sub_pts_list):
+        for j, jj in zip(i, ii):
             if j not in wl_check or jj not in sub_check:
                 return False
     return True
 
 
 def _check_if_win_matches_pts(points_list, sub_pts_list, win_loss_list):
-    for i, ii, iii in win_loss_list, points_list, sub_pts_list:
+    for i, ii, iii in zip(win_loss_list, points_list, sub_pts_list):
         if i[0] == 'W':
             if not (ii[0] > ii[1] or (ii[0] == i[1] and iii[0] > iii[1])):
                 return False
@@ -81,3 +81,11 @@ def get_match_list(path_to_file, round_num):
         error.InputError("Round number is invalid")
 
     return match_list
+
+
+def get_json_list(path_to_file):
+    f = open(path_to_file, 'r+')
+    file_data = json.load(f)
+    f.close()
+    json_list = file_data["TennisRoster"]
+    return json_list
