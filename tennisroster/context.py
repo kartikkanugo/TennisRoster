@@ -3,6 +3,7 @@ from .resources import combinations
 from . import error
 from .resources import jsonhelper
 from .resources import flowchart
+from .resources import genresult
 
 
 class Context:
@@ -48,6 +49,14 @@ class Context:
     def update_scores(self, round_num, points_list, sub_pts_list, win_loss_list):
         jsonhelper.add_dict_to_json(self.ctx, self.get_match_list(round_num), points_list, sub_pts_list, win_loss_list,
                                 round_num - 1)
+
+    def generate_results(self, round_num = None):
+        json_list = jsonhelper.get_json_list(self.ctx)
+        gen_obj = genresult.ResultGenerator(json_list)
+        if round_num is None:
+            gen_obj.generate_result_all(json_list)
+        else:
+            genresult.generate_result_round(json_list, round_num-1)
 
     @staticmethod
     def _check_compatibility(path_of_file):
