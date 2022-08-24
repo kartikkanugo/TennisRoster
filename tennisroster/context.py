@@ -1,7 +1,7 @@
 import os
 from .resources import combinations
 from . import error
-from .resources import helper
+from .resources import jsonhelper
 from .resources import flowchart
 
 
@@ -30,12 +30,12 @@ class Context:
 
     def create_matchups(self):
         self.matches = combinations.create_matchups(self.pairs)
-        helper.add_dict_to_json(self.ctx, self.matches, [(-1, -1)] * len(self.matches), [(0, 0)] * len(self.matches),
+        jsonhelper.add_dict_to_json(self.ctx, self.matches, [(-1, -1)] * len(self.matches), [(0, 0)] * len(self.matches),
                                 [('D', 'D')] * len(self.matches))
         return self.matches
 
     def produce_flowchart(self, round_num=None):
-        json_list = helper.get_json_list(self.ctx)
+        json_list = jsonhelper.get_json_list(self.ctx)
         flow_obj = flowchart.Flowchart(json_list)
         if round_num is None:
             flow_obj.create_all_flow_charts()
@@ -43,19 +43,19 @@ class Context:
             flow_obj.create_round_flow_chart(round_num - 1)
 
     def get_match_list(self, round_num):
-        return helper.get_match_list(self.ctx, round_num - 1)
+        return jsonhelper.get_match_list(self.ctx, round_num - 1)
 
     def update_scores(self, round_num, points_list, sub_pts_list, win_loss_list):
-        helper.add_dict_to_json(self.ctx, self.get_match_list(round_num), points_list, sub_pts_list, win_loss_list,
+        jsonhelper.add_dict_to_json(self.ctx, self.get_match_list(round_num), points_list, sub_pts_list, win_loss_list,
                                 round_num - 1)
 
     @staticmethod
     def _check_compatibility(path_of_file):
         # Checking if file exist and it is empty
         if os.path.exists(path_of_file) and os.stat(path_of_file).st_size == 0:
-            helper.initialise_json(path_of_file)
+            jsonhelper.initialise_json(path_of_file)
             return True
-        if helper.check_file_compatibility(path_of_file):
+        if jsonhelper.check_file_compatibility(path_of_file):
             return True
 
         return False
