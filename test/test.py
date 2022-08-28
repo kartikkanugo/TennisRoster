@@ -18,3 +18,6 @@ ctx.update_scores(2, points, sub_points, win_list)
 
 
 ctx.produce_flowchart(2)
+
+
+ctx.generate_results(2)

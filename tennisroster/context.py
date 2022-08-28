@@ -54,9 +54,9 @@ class Context:
         json_list = jsonhelper.get_json_list(self.ctx)
         gen_obj = genresult.ResultGenerator(json_list)
         if round_num is None:
-            gen_obj.generate_result_all(json_list)
+            gen_obj.generate_result_all()
         else:
-            genresult.generate_result_round(json_list, round_num-1)
+            gen_obj.generate_result_round(round_num-1)
 
     @staticmethod
     def _check_compatibility(path_of_file):
