@@ -1,4 +1,17 @@
 import pandas as pd
+from enum import Enum, unique
+from dataclasses import dataclass
+
+
+@unique
+class RoundCheck(Enum):
+    SINGLE_ROUND = 1
+    ALL_ROUNDS = 2
+
+
+@dataclass()
+class GenData:
+    pass
 
 
 class ResultGenerator:
