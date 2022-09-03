@@ -31,8 +31,8 @@ class Context:
 
     def create_matchups(self):
         self.matches = combinations.create_matchups(self.pairs)
-        jsonhelper.add_dict_to_json(self.ctx, self.matches, [(-1, -1)] * len(self.matches), [(0, 0)] * len(self.matches),
-                                [('D', 'D')] * len(self.matches))
+        jsonhelper.add_dict_to_json(self.ctx, self.matches, [(-1, -1)] * len(self.matches), [(0, 0)] * len(self.matches)
+                                    , [('D', 'D')] * len(self.matches))
         return self.matches
 
     def produce_flowchart(self, round_num=None):
@@ -54,9 +54,9 @@ class Context:
         json_list = jsonhelper.get_json_list(self.ctx)
         gen_obj = genresult.ResultGenerator(json_list)
         if round_num is None:
-            gen_obj.generate_result_all()
+            gen_obj.generate_result_file()
         else:
-            gen_obj.generate_result_round(round_num-1)
+            gen_obj.generate_result_file(round_num-1)
 
     @staticmethod
     def _check_compatibility(path_of_file):

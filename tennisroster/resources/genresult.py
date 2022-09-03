@@ -1,6 +1,7 @@
 import pandas as pd
 from enum import Enum, unique
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict, field
+from datetime import datetime
 
 
 @unique
@@ -21,24 +22,45 @@ class SingleRoundData:
 @dataclass()
 class AllRoundData:
     names: list[str]
-    round_data: list[SingleRoundData]
+    num_matches: list[int]
 
 
-def create_result_file_single(single_obj, pro_nov_chk):
-    pass
+def create_result_file_single(single_obj, pro_nov_chk, round_num):
+    df = pd.DataFrame(asdict(single_obj))
+    if pro_nov_chk == ProNovCheck.PRO:
+        datatype = '_Pro'
+    else:
+        datatype = '_Nov'
+    now = datetime.now()
+    dt_string = now.strftime("%d-%m-%Y_%H-%M")
+    result_data = dt_string + "_Result_" + str(round_num + 1) + datatype + ".xlsx"
+    df.to_excel(result_data, merge_cells=False, index=False)
 
 
 class ResultGenerator:
     def __init__(self, dict_list):
         self.dict_list = dict_list
 
-    def generate_result_file(self, round_num):
+    def generate_result_file(self, round_num=None):
         if round_num is not None:
             [pro_obj, nov_obj] = self._generate_result_obj_single(round_num)
-            create_result_file_single(pro_obj, ProNovCheck.PRO)
-            create_result_file_single(nov_obj, ProNovCheck.NOV)
+            create_result_file_single(pro_obj, ProNovCheck.PRO, round_num)
+            create_result_file_single(nov_obj, ProNovCheck.NOV, round_num)
         else:
-            pass
+            all_pro_data: list[SingleRoundData] = []
+            all_nov_data: list[SingleRoundData] = []
+            total_rounds = len(self.dict_list)
+            for i in range(total_rounds + 1):
+                [pro_obj, nov_obj] = self._generate_result_obj_single(i)
+                all_pro_data.append(pro_obj)
+                all_nov_data.append(nov_obj)
+
+            all_pro_obj = self._generate_result_obj(all_pro_data)
+            all_nov_obj = self._generate_result_obj(all_nov_data)
+            # todo
+
+    def _generate_result_obj(self, all_pro_data) -> AllRoundData:
+        pass
 
     def _generate_result_obj_single(self, round_num) -> list[SingleRoundData]:
         [pro_names, pro_scores, pro_sub_scores, pro_win_loss] = self._get_data_lists(self.dict_list[round_num]["Teams"],
