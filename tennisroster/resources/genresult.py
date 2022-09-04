@@ -10,6 +10,13 @@ class ProNovCheck(Enum):
     NOV = 2
 
 
+@unique
+class PtsWinLoss(Enum):
+    WIN = 2
+    TIE = 1
+    LOSS = 0
+
+
 @dataclass()
 class SingleRoundData:
     names: list[str]
@@ -23,6 +30,7 @@ class SingleRoundData:
 class AllRoundData:
     names: list[str]
     num_matches: list[int]
+    tot_pts: list[int]
 
 
 def create_result_file_single(single_obj, pro_nov_chk, round_num):
@@ -59,8 +67,23 @@ class ResultGenerator:
             all_nov_obj = self._generate_result_obj(all_nov_data)
             # todo
 
-    def _generate_result_obj(self, all_pro_data) -> AllRoundData:
-        pass
+    @staticmethod
+    def _generate_result_obj(all_data: list[SingleRoundData]) -> AllRoundData:
+        name_list = [all_data[0]['names']]
+
+        for single_data in all_data:
+            for i in single_data['names']:
+                if i not in name_list:
+                    name_list.append(i)  # Load names missing in the list along
+
+        num_matches = [0] * len(name_list)
+        tot_wl_pts = [0] * len(name_list)
+        tot_scores = [0] * len(name_list)
+
+        for i in range(len(name_list)):
+            pass
+
+
 
     def _generate_result_obj_single(self, round_num) -> list[SingleRoundData]:
         [pro_names, pro_scores, pro_sub_scores, pro_win_loss] = self._get_data_lists(self.dict_list[round_num]["Teams"],
@@ -84,28 +107,6 @@ class ResultGenerator:
         nov_obj = SingleRoundData(nov_names, nov_scores, nov_sub_scores, nov_win_loss, round_num)
 
         return [pro_obj, nov_obj]
-
-    def _generate_result_file(self, score_name, sub_score_name, win_loss_score_name, round_num):
-        self.pres_round[score_name] = []
-        self.pres_round[sub_score_name] = []
-        self.pres_round[win_loss_score_name] = []
-
-        self.nres_round[score_name] = []
-        self.nres_round[sub_score_name] = []
-        self.nres_round[win_loss_score_name] = []
-
-        # if self.allrounds is active check names for individual rounds and then append num matches, and scores in
-        # the big list else --- only check in the names and igore
-        if self.pro_names is not None or self.nov_names is not None:
-            self._check_new_names(round_num)
-        else:
-            self._load_names(round_num)
-
-        round_list = zip(self.dict_list[round_num]["Teams"], self.dict_list[round_num]["Points"],
-                         self.dict_list[round_num]["Sub_pts"], self.dict_list[round_num]["Win_loss"])
-        for teams, pts, s_pts, wl in round_list:
-            pro_index = self.pro_names.index(teams[0])
-            self.res_round[pro_index] = self.pro_num_matches[pro_index] + 1
 
     @staticmethod
     def _get_data_lists(names_list, pts_list, sub_pts_list, win_loss_list, pro_nov_chk) -> list:
@@ -131,24 +132,3 @@ class ResultGenerator:
 
         return [res_names, res_pts, res_sub_pts, res_win_loss]
 
-    def _check_new_names(self, round_num):
-        for teams in self.dict_list[round_num]["Teams"]:
-            if teams[0][0] not in self.pro_names:
-                self.pro_names.append(teams[0][0])
-            if teams[0][1] not in self.nov_names:
-                self.nov_names.append(teams[0][1])
-            if teams[1][0] not in self.pro_names:
-                self.pro_names.append(teams[1][0])
-            if teams[1][1] not in self.nov_names:
-                self.nov_names.append(teams[1][1])
-
-        for teams in self.dict_list[round_num]["Teams"]:
-            pro_index = self.pro_names.index(teams[0][0])
-            self.pro_num_matches[pro_index] = self.pro_num_matches[pro_index] + 1
-            pro_index = self.pro_names.index(teams[1][0])
-            self.pro_num_matches[pro_index] = self.pro_num_matches[pro_index] + 1
-
-            nov_index = self.nov_names.index(teams[0][1])
-            self.nov_num_matches[nov_index] = self.nov_num_matches[nov_index] + 1
-            nov_index = self.nov_names.index(teams[1][1])
-            self.nov_num_matches[nov_index] = self.nov_num_matches[nov_index] + 1
