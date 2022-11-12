@@ -8,6 +8,8 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
+kartik
+Kartik_tennis
 """
 
 from pathlib import Path
@@ -20,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-4f6@xu@a3e^fbwsrv9b#t95qu#x@9fkx(^7y910sh3x&slc$6m"
+SECRET_KEY = "django-insecure-6vvt)bmd1wq@4@e2&q10+n9l_l^*v!!86iuzi2^5ar+$-*-o^="
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +33,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "rosterdisplay",
+    "scores",
+    "userregistration",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -76,7 +81,7 @@ WSGI_APPLICATION = "tennisbackend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "tennis_db.sqlite3",
     }
 }
 
@@ -105,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "CET"   #UTC
 
 USE_I18N = True
 
