@@ -7,7 +7,7 @@ from .resources import genresult
 
 
 class Context:
-    """ The context class must be initialised with the contexts json file. The context will be used for all the
+    """The context class must be initialised with the contexts json file. The context will be used for all the
     functions to check loading data, flowcharts etc.
     """
 
@@ -19,10 +19,12 @@ class Context:
         if self._check_compatibility(file):
             self.ctx = file
         else:
-            raise error.InputError("Json file is not empty or Incompatible. Initialisation failed")
+            raise error.InputError(
+                "Json file is not empty or Incompatible. Initialisation failed"
+            )
 
     def load_input_data(self, excel_file, opts):
-        """ The function will load the input data from the excel file to the context json file
+        """The function will load the input data from the excel file to the context json file
         If the context is not empty it will generate and error"""
 
         self.df = combinations.read_excel(excel_file)
@@ -31,8 +33,13 @@ class Context:
 
     def create_matchups(self):
         self.matches = combinations.create_matchups(self.pairs)
-        jsonhelper.add_dict_to_json(self.ctx, self.matches, [(-1, -1)] * len(self.matches), [(0, 0)] * len(self.matches)
-                                    , [('D', 'D')] * len(self.matches))
+        jsonhelper.add_dict_to_json(
+            self.ctx,
+            self.matches,
+            [(-1, -1)] * len(self.matches),
+            [(0, 0)] * len(self.matches),
+            [("D", "D")] * len(self.matches),
+        )
         return self.matches
 
     def produce_flowchart(self, round_num=None):
@@ -47,16 +54,22 @@ class Context:
         return jsonhelper.get_match_list(self.ctx, round_num - 1)
 
     def update_scores(self, round_num, points_list, sub_pts_list, win_loss_list):
-        jsonhelper.add_dict_to_json(self.ctx, self.get_match_list(round_num), points_list, sub_pts_list, win_loss_list,
-                                round_num - 1)
+        jsonhelper.add_dict_to_json(
+            self.ctx,
+            self.get_match_list(round_num),
+            points_list,
+            sub_pts_list,
+            win_loss_list,
+            round_num - 1,
+        )
 
-    def generate_results(self, round_num = None):
+    def generate_results(self, round_num=None):
         json_list = jsonhelper.get_json_list(self.ctx)
         gen_obj = genresult.ResultGenerator(json_list)
         if round_num is None:
             gen_obj.generate_result_file()
         else:
-            gen_obj.generate_result_file(round_num-1)
+            gen_obj.generate_result_file(round_num - 1)
 
     @staticmethod
     def _check_compatibility(path_of_file):

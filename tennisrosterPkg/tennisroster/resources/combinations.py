@@ -33,8 +33,8 @@ def create_matchups(pairs):
 
 
 def create_pairs(df, opts):
-    list_pro = list(df['Pros'])
-    list_nov = list(df['Novice'])
+    list_pro = list(df["Pros"])
+    list_nov = list(df["Novice"])
     if pd.isnull(list_nov).any():
         list_without_nan = [x for x in list_nov if pd.isnull(x) == False]
         if opts == 1:
@@ -56,6 +56,6 @@ def create_pairs(df, opts):
 
         list_pro = list_without_nan
 
-    allpairs = list(zip_longest(list_pro, list_nov, fillvalue='-'))
+    allpairs = list(zip_longest(list_pro, list_nov, fillvalue="-"))
 
     return allpairs

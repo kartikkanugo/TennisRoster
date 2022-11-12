@@ -12,6 +12,7 @@ black = "*"
 openpyxl = "*"
 pygraphviz="*"
 graphviz = "*"
+django = "*"
 
 [dev-packages]
 

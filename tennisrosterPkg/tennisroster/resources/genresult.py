@@ -36,9 +36,9 @@ class AllRoundData:
 def create_result_file_single(single_obj, pro_nov_chk, round_num):
     df = pd.DataFrame(asdict(single_obj))
     if pro_nov_chk == ProNovCheck.PRO:
-        datatype = '_Pro'
+        datatype = "_Pro"
     else:
-        datatype = '_Nov'
+        datatype = "_Nov"
     now = datetime.now()
     dt_string = now.strftime("%d-%m-%Y_%H-%M")
     result_data = dt_string + "_Result_" + str(round_num + 1) + datatype + ".xlsx"
@@ -69,10 +69,10 @@ class ResultGenerator:
 
     @staticmethod
     def _generate_result_obj(all_data: list[SingleRoundData]) -> AllRoundData:
-        name_list = [all_data[0]['names']]
+        name_list = [all_data[0]["names"]]
 
         for single_data in all_data:
-            for i in single_data['names']:
+            for i in single_data["names"]:
                 if i not in name_list:
                     name_list.append(i)  # Load names missing in the list along
 
@@ -83,33 +83,35 @@ class ResultGenerator:
         for i in range(len(name_list)):
             pass
 
-
-
     def _generate_result_obj_single(self, round_num) -> list[SingleRoundData]:
-        [pro_names, pro_scores, pro_sub_scores, pro_win_loss] = self._get_data_lists(self.dict_list[round_num]["Teams"],
-                                                                                     self.dict_list[round_num][
-                                                                                         "Points"],
-                                                                                     self.dict_list[round_num][
-                                                                                         "Sub_pts"],
-                                                                                     self.dict_list[round_num][
-                                                                                         "Win_loss"],
-                                                                                     ProNovCheck.PRO)
-        [nov_names, nov_scores, nov_sub_scores, nov_win_loss] = self._get_data_lists(self.dict_list[round_num]["Teams"],
-                                                                                     self.dict_list[round_num][
-                                                                                         "Points"],
-                                                                                     self.dict_list[round_num][
-                                                                                         "Sub_pts"],
-                                                                                     self.dict_list[round_num][
-                                                                                         "Win_loss"],
-                                                                                     ProNovCheck.NOV)
+        [pro_names, pro_scores, pro_sub_scores, pro_win_loss] = self._get_data_lists(
+            self.dict_list[round_num]["Teams"],
+            self.dict_list[round_num]["Points"],
+            self.dict_list[round_num]["Sub_pts"],
+            self.dict_list[round_num]["Win_loss"],
+            ProNovCheck.PRO,
+        )
+        [nov_names, nov_scores, nov_sub_scores, nov_win_loss] = self._get_data_lists(
+            self.dict_list[round_num]["Teams"],
+            self.dict_list[round_num]["Points"],
+            self.dict_list[round_num]["Sub_pts"],
+            self.dict_list[round_num]["Win_loss"],
+            ProNovCheck.NOV,
+        )
 
-        pro_obj = SingleRoundData(pro_names, pro_scores, pro_sub_scores, pro_win_loss, round_num)
-        nov_obj = SingleRoundData(nov_names, nov_scores, nov_sub_scores, nov_win_loss, round_num)
+        pro_obj = SingleRoundData(
+            pro_names, pro_scores, pro_sub_scores, pro_win_loss, round_num
+        )
+        nov_obj = SingleRoundData(
+            nov_names, nov_scores, nov_sub_scores, nov_win_loss, round_num
+        )
 
         return [pro_obj, nov_obj]
 
     @staticmethod
-    def _get_data_lists(names_list, pts_list, sub_pts_list, win_loss_list, pro_nov_chk) -> list:
+    def _get_data_lists(
+        names_list, pts_list, sub_pts_list, win_loss_list, pro_nov_chk
+    ) -> list:
         res_names = []
         res_pts = []
         res_sub_pts = []
@@ -119,7 +121,9 @@ class ResultGenerator:
         else:
             idx = 1
 
-        for teams, pts, sub_pts, win_loss in zip(names_list, pts_list, sub_pts_list, win_loss_list):
+        for teams, pts, sub_pts, win_loss in zip(
+            names_list, pts_list, sub_pts_list, win_loss_list
+        ):
             res_names.append(teams[0][idx])
             res_pts.append(pts[0])
             res_sub_pts.append(sub_pts[0])
@@ -131,4 +135,3 @@ class ResultGenerator:
             res_win_loss.append(win_loss[1])
 
         return [res_names, res_pts, res_sub_pts, res_win_loss]
-

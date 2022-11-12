@@ -1,12 +1,11 @@
 import json
 from .. import error
 
-INITIALISE_DICT = {"TennisRoster": []
-                   }
+INITIALISE_DICT = {"TennisRoster": []}
 
 
 def check_file_compatibility(path_to_file):
-    f = open(path_to_file, 'r+')
+    f = open(path_to_file, "r+")
     file_data = json.load(f)
     f.close()
     if "TennisRoster" in file_data:
@@ -15,13 +14,13 @@ def check_file_compatibility(path_to_file):
 
 
 def initialise_json(path_to_file):
-    f = open(path_to_file, 'r+')
+    f = open(path_to_file, "r+")
     json.dump(INITIALISE_DICT, f, indent=4)
     f.close()
 
 
 def _check_win_loss_list(win_loss_list, sub_pts_list):
-    wl_check = {'D', 'L', 'W'}
+    wl_check = {"D", "L", "W"}
     sub_check = {0, 15, 30, 40}
     for i, ii in zip(win_loss_list, sub_pts_list):
         for j, jj in zip(i, ii):
@@ -32,10 +31,10 @@ def _check_win_loss_list(win_loss_list, sub_pts_list):
 
 def _check_if_win_matches_pts(points_list, sub_pts_list, win_loss_list):
     for i, ii, iii in zip(win_loss_list, points_list, sub_pts_list):
-        if i[0] == 'W':
+        if i[0] == "W":
             if not (ii[0] > ii[1] or (ii[0] == i[1] and iii[0] > iii[1])):
                 return False
-        elif i[0] == 'L':
+        elif i[0] == "L":
             if not (ii[0] < ii[1] or (ii[0] == i[1] and iii[0] < iii[1])):
                 return False
         else:
@@ -44,22 +43,29 @@ def _check_if_win_matches_pts(points_list, sub_pts_list, win_loss_list):
     return True
 
 
-def add_dict_to_json(path_to_file, match_list, points_list, sub_pts_list, win_loss_list, round_num=-1):
+def add_dict_to_json(
+    path_to_file, match_list, points_list, sub_pts_list, win_loss_list, round_num=-1
+):
     if len(match_list) != len(points_list) != len(sub_pts_list) != len(win_loss_list):
-        raise error.InputError("Lengths of the match list, points list ,sub_pts_list and win_loss_list are not equal")
+        raise error.InputError(
+            "Lengths of the match list, points list ,sub_pts_list and win_loss_list are not equal"
+        )
 
     if not _check_win_loss_list(win_loss_list, sub_pts_list):
-        raise error.InputError("Win loss list or sub_pts_list consists of other than (D L W) or (0 15 30 40)")
+        raise error.InputError(
+            "Win loss list or sub_pts_list consists of other than (D L W) or (0 15 30 40)"
+        )
 
     if not _check_if_win_matches_pts(points_list, sub_pts_list, win_loss_list):
         raise error.InputError("Win or loss condition does not match the points list")
 
-    round_dict = {"Teams": match_list,
-                  "Points": points_list,
-                  "Sub_pts": sub_pts_list,
-                  "Win_loss": win_loss_list
-                  }
-    f = open(path_to_file, 'r+')
+    round_dict = {
+        "Teams": match_list,
+        "Points": points_list,
+        "Sub_pts": sub_pts_list,
+        "Win_loss": win_loss_list,
+    }
+    f = open(path_to_file, "r+")
     file_data = json.load(f)
     if round_num == -1:
         file_data["TennisRoster"].append(round_dict)
@@ -72,7 +78,7 @@ def add_dict_to_json(path_to_file, match_list, points_list, sub_pts_list, win_lo
 
 
 def get_match_list(path_to_file, round_num):
-    f = open(path_to_file, 'r+')
+    f = open(path_to_file, "r+")
     file_data = json.load(f)
     f.close()
     if len(file_data["TennisRoster"]) > round_num >= 0:
@@ -84,7 +90,7 @@ def get_match_list(path_to_file, round_num):
 
 
 def get_json_list(path_to_file):
-    f = open(path_to_file, 'r+')
+    f = open(path_to_file, "r+")
     file_data = json.load(f)
     f.close()
     json_list = file_data["TennisRoster"]
